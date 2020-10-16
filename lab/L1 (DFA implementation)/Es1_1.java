@@ -1,41 +1,43 @@
 public class Es1_1 extends Automata{
 
     public boolean scan(String s){
-        int state = 0;
         int i = 0;
 
         //Analyzing the input string
-        while(state >= 0 && i < s.length()){
+        while(getState() >= 0 && i < s.length()){
             //Current char to be analyzed
             final char ch = s.charAt(i++);
 
-            switch (state) {
+            //State printing (only for debugging)
+            //System.out.println("State rn: " + getState());
+
+            switch (getState()) {
                 case 0:
-                    if (ch == '0'){ state = 1; }
-                    else if (ch == '1'){ state = 0; }
-                    else{ state = -1; }
+                    if (ch == '0'){ setState(1); }
+                    else if (ch == '1'){ setState(0); }
+                    else{ setState(-1); }
                     break;
             
                 case 1:
-                    if (ch == '0'){ state = 2; }
-                    else if (ch == '1'){ state = 0; }
-                    else{ state = -1; }
+                    if (ch == '0'){ setState(2); }
+                    else if (ch == '1'){ setState(0); }
+                    else{ setState(-1); }
                     break;
 
                 case 2:
-                    if (ch == '0'){ state = 3; }
-                    else if (ch == '1'){ state = 0; }
-                    else{ state = -1; }
+                    if (ch == '0'){ setState(3); }
+                    else if (ch == '1'){ setState(0); }
+                    else{ setState(-1); }
                     break;
 
                 case 3:
-                    if (ch == '0' || ch == '1'){ state = 3; }
-                    else{ state = -1; }
+                    if (ch == '0' || ch == '1'){ setState(3); }
+                    else{ setState(-1); }
                     break;     
             }
         }
 
-        return state == 0;
+        return getState() == 0;
     }
 
 } 
