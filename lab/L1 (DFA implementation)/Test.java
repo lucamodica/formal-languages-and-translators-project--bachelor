@@ -13,14 +13,14 @@ public class Test {
         automata = new Es1_1();
         str = "1001";
         System.out.println("**Es1_1 automata: recognises strings without 3 consecutive zeros**");
-        System.out.println("Recognising \"" + str +"\" with Es1_1 automata: " + automata.test(str));
+        System.out.println("Recognising \"" + str +"\" : " + automata.test(str));
         System.out.println("");
 
         //Es1_2
         automata = new Es1_2();
         str = "pp";
         System.out.println("**Es1_2 automata: recognises Java identifier**");
-        System.out.println("Recognising \"" + str +"\" with Es1_2 automata: " + automata.test(str));
+        System.out.println("Recognising \"" + str +"\" : " + automata.test(str));
         System.out.println("");
 
         //Es1_3
@@ -30,7 +30,15 @@ public class Test {
         System.out.println("-- The string must structured with the id number followed by the student surname.");
         System.out.println("-- T2: even id number, surname initial between A and K");
         System.out.println("-- T3: odd id number, surname initial between L and Z");
-        System.out.println("Recognising \"" + str +"\" with Es1_3 automata: " + automata.test(str));
+        System.out.println("Recognising \"" + str +"\" : " + automata.test(str));
+        System.out.println("");
+
+        //Es1_3
+        automata = new Es1_4();
+        str = "200De    anchi";
+        System.out.println("**Es1_4 automata: same as Es1_3, but with space between id number and surname allowed**");
+        System.out.println("-- Composite surnames with \"D\" + another letter as the first part are also recognised.");
+        System.out.println("Recognising \"" + str +"\" : " + automata.test(str));
         System.out.println("");
 
     }

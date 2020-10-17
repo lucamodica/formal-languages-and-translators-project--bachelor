@@ -23,28 +23,26 @@ public class Es1_3 extends Automata{
                     break;
             
                 case 1:
-                    if (ch >= '0' && ch <= '9'){
-                        setState(0); 
-                    }
-                    else if ((ch >= 'A' && ch <= 'K') || (ch >= 'a' && ch <= 'k')){
+                    if ((ch >= 'A' && ch <= 'K') || (ch >= 'a' && ch <= 'k')){
                         setState(3); 
                     }
                     else if ((ch >= 'L' && ch <= 'Z') || (ch >= 'l' && ch <= 'z')){
                         setState(4); 
                     }
+                    else if ((int) ch % 2 == 0){ setState(1); }
+                    else if ((int) ch % 2 == 1){ setState(2); }
                     else{ setState(-1); }
                     break;
 
                 case 2:
-                    if (ch >= '0' && ch <= '9'){
-                        setState(0); 
-                    }
-                    else if ((ch >= 'A' && ch <= 'K') || (ch >= 'a' && ch <= 'k')){
+                    if ((ch >= 'A' && ch <= 'K') || (ch >= 'a' && ch <= 'k')){
                         setState(4); 
                     }
                     else if ((ch >= 'L' && ch <= 'Z') || (ch >= 'l' && ch <= 'z')){
                         setState(3); 
                     }
+                    else if ((int) ch % 2 == 0){ setState(1); }
+                    else if ((int) ch % 2 == 1){ setState(2); }
                     else{ setState(-1); }
                     break;
 
