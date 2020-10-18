@@ -19,7 +19,7 @@ public class Test {
         //Es1_2
         automata = new Es1_2();
         str = "pp";
-        System.out.println("**Es1_2 automata: recognises Java identifier**");
+        System.out.println("**Es1_2 automata: recognises Java identifiers**");
         System.out.println("Recognising \"" + str +"\" : " + automata.test(str));
         System.out.println("");
 
@@ -38,6 +38,13 @@ public class Test {
         str = "200De    anchi";
         System.out.println("**Es1_4 automata: same as Es1_3, but with space between id number and surname allowed**");
         System.out.println("-- Composite surnames with \"D\" + another letter as the first part are also recognised.");
+        System.out.println("Recognising \"" + str +"\" : " + automata.test(str));
+        System.out.println("");
+
+        //Es1_5
+        automata = new Es1_5();
+        str = "Bianchi123456";
+        System.out.println("**Es1_5 automata: same as Es1_3, but with id/surname orded flipped**");
         System.out.println("Recognising \"" + str +"\" : " + automata.test(str));
         System.out.println("");
 
