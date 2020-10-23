@@ -18,8 +18,13 @@ public class Test {
 
         //Es1_2
         automata = new Es1_2();
+<<<<<<< Updated upstream
         str = "pp";
         System.out.println("**Es1_2 automata: recognises Java identifiers**");
+=======
+        str = "_99";
+        System.out.println("**Es1_2 automata: recognises Java identifier**");
+>>>>>>> Stashed changes
         System.out.println("Recognising \"" + str +"\" : " + automata.test(str));
         System.out.println("");
 
