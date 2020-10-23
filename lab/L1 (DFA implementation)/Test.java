@@ -18,13 +18,8 @@ public class Test {
 
         //Es1_2
         automata = new Es1_2();
-<<<<<<< Updated upstream
         str = "pp";
         System.out.println("**Es1_2 automata: recognises Java identifiers**");
-=======
-        str = "_99";
-        System.out.println("**Es1_2 automata: recognises Java identifier**");
->>>>>>> Stashed changes
         System.out.println("Recognising \"" + str +"\" : " + automata.test(str));
         System.out.println("");
 
@@ -38,7 +33,7 @@ public class Test {
         System.out.println("Recognising \"" + str +"\" : " + automata.test(str));
         System.out.println("");
 
-        //Es1_3
+        //Es1_4
         automata = new Es1_4();
         str = "200De    anchi";
         System.out.println("**Es1_4 automata: same as Es1_3, but with space between id number and surname allowed**");
