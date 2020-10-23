@@ -35,7 +35,7 @@ public class Test {
 
         //Es1_4
         automata = new Es1_4();
-        str = "200De    anchi";
+        str = "200De    Anchi";
         System.out.println("**Es1_4 automata: same as Es1_3, but with space between id number and surname allowed**");
         System.out.println("-- Composite surnames with \"D\" + another letter as the first part are also recognised.");
         System.out.println("Recognising \"" + str +"\" : " + automata.test(str));
