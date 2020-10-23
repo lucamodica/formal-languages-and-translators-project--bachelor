@@ -8,7 +8,7 @@ public class Es1_10 extends Automata{
             final char ch = s.charAt(i++);
 
             //State printing (only for debugging)
-            System.out.println("State rn: " + getState());
+            //System.out.println("State rn: " + getState());
 
             switch (getState()) {
                 case 0:
