@@ -1,7 +1,6 @@
 public class Es1_5 extends Automata{
 
     public boolean scan(String s){
-        //int state = 0;
         int i = 0;
 
         //Analyzing the input string
