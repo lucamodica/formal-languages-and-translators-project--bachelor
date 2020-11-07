@@ -13,16 +13,62 @@ public class Lexer {
         }
     }
 
-    private Token incorrectToken(char details){
+    private Token incorrectToken(String details){
         System.err.println("Erroneous character after " + details + " : "  + peek);
         return null;
     }
 
     public Token lexical_scan(BufferedReader br) {
-        while (peek == ' ' || peek == '\t' || peek == '\n'  || peek == '\r') {
-            if (peek == '\n') line++;
-            readch(br);
+        while (peek == ' ' || peek == '\t' || peek == '\n'  || peek == '\r' || peek == '/') {
+
+            //Division, single-line comment, multi-line comment
+            if (peek == '\n'){ 
+                line++; 
+            }
+            if(peek == '/'){
+                readch(br);
+
+                //Single-line comment
+                if(peek == '/'){
+                    //Read until a '\n' is found
+                    readch(br);
+                    while(peek != '\n'){
+                        readch(br);
+                    }
+                    line++;
+                }
+
+                //Multi-line operator
+                else if(peek == '*'){
+                    //Read until "*/" is found
+                    String c_close = "";
+                    readch(br);
+                    while(peek != (char) -1 && !c_close.equals("*/")){
+                        if((peek == '*' && c_close.isEmpty()) || (peek == '/' && c_close.equals("*"))){
+                            c_close += peek;
+                        }
+                        else{ c_close = ""; }
+                        readch(br);
+                    }
+
+                    //If peek == EOF after the loop and we haven't found any "*/", this means that we got an error
+                    if(!c_close.equals("*/")){
+                        return incorrectToken("missing multi-line comment close");
+                    }
+                }
+
+                //Division operator
+                else{
+                    return Token.div;
+                }
+            }
+            else{
+                readch(br);
+            }
+
+             
         }
+        
         
         switch (peek) {
 
@@ -59,10 +105,6 @@ public class Lexer {
                 peek = ' ';
                 return Token.mult;
             
-            case '/':
-                peek = ' ';
-                return Token.div;
-            
             case ';':
                 peek = ' ';
                 return Token.semicolon;
@@ -77,7 +119,7 @@ public class Lexer {
                     return Word.and;
                 } 
                 else {
-                    return incorrectToken('&');
+                    return incorrectToken("&");
                 }
             
             //Case "||"
@@ -88,7 +130,7 @@ public class Lexer {
                     return Word.or;
                 } 
                 else {
-                    return incorrectToken('|');
+                    return incorrectToken("|");
                 }
             
             //Case "==", "="
@@ -103,7 +145,7 @@ public class Lexer {
                     return Token.assign;
                 } 
                 else {
-                    return incorrectToken('=');
+                    return incorrectToken("=");
                 }
             
             //Case "<=", "<>", "<"
@@ -122,7 +164,7 @@ public class Lexer {
                     return Word.lt;
                 }
                 else {
-                    return incorrectToken('<');
+                    return incorrectToken("<");
                 }
 
             //Case ">", ">="  
@@ -137,7 +179,7 @@ public class Lexer {
                     return Word.gt;
                 }
                 else {
-                    return incorrectToken('>');
+                    return incorrectToken(">");
                 }
 
 
@@ -150,7 +192,7 @@ public class Lexer {
             default:
                 String str = "";
                 //Case for identifiers and keywords
-                if (Character.isLetter(peek)) {
+                if (Character.isLetter(peek) || peek == '_') {
 
                     str += peek;
                     readch(br);
@@ -186,11 +228,15 @@ public class Lexer {
                     }
 
                     //Checking the last character read
-                    return new NumberTok(Tag.NUM, Integer.parseInt(str));
+                    if(Character.isLetter(peek) || peek == '_'){
+                        return incorrectToken("illegal number pattern");
+                    }
+                    else{ return new NumberTok(Tag.NUM, Integer.parseInt(str)); }
+                    
 
                 } 
                 else {
-                    return incorrectToken('&');
+                    return incorrectToken("unrecognised character");
                 }
          }
     }
