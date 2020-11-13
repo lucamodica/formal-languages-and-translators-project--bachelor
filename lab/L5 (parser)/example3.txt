@@ -1,0 +1,16 @@
+//A little program
+//readch(go,brrrr)
+//
+c = 8/2;
+//c)8 
+if (c == 8 ){
+    /* this is an assignement
+
+    */
+    c_8_ = c*2;
+
+}
+
+/**/
+
+
