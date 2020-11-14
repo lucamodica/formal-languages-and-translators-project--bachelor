@@ -30,20 +30,18 @@ public class Parser {
     public void start() {
         switch(look.tag){
             case '(':
-            case :
+            case Tag.NUM:
                 expr();
-                break;
-            
-            case Token(Tag.EOF):
                 match(Tag.EOF);
                 break;
+            
         }
     }
 
     private void expr() {
 	    switch(look.tag){
             case '(':
-            case :
+            case Tag.NUM:
                 term();
                 exprp();
                 break;
@@ -62,26 +60,63 @@ public class Parser {
                 term();
                 exprp();
                 break;
+
             case ')':
+            case Tag.EOF:
                 break;
+
         }
     }
 
     private void term() {
-        
+        switch(look.tag){
+            case '(':
+            case Tag.NUM:
+                fact();
+                termp();
+                break;
+        }
     }
 
     private void termp() {
-        
+        switch(look.tag){
+            case '*':
+                match(Token.mult.tag);
+                fact();
+                termp();
+                break;
+
+            case '/':
+                match(Token.div.tag);
+                fact();
+                termp();
+                break;
+            
+            case '+':
+            case '-':
+            case ')':
+            case Tag.EOF:
+                break;
+        }
     }
 
     private void fact() {
-        // ... completare ...
+        switch(look.tag){
+            case '(':
+                match(Token.lpt.tag);
+                expr();
+                match(Token.rpt.tag);
+                break;
+
+            case Tag.NUM:
+                match(Tag.NUM);
+                break;
+        }
     }
 		
     public static void main(String[] args) {
         Lexer lex = new Lexer();
-        String path = "...path..."; // il percorso del file da leggere
+        String path = "D:\\Luca\\Desktop\\Uni\\LFT\\lab\\L5 (parser)\\exampleParser.txt"; // il percorso del file da leggere
         try {
             BufferedReader br = new BufferedReader(new FileReader(path));
             Parser parser = new Parser(lex, br);
