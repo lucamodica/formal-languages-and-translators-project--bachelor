@@ -60,11 +60,6 @@ public class Parser {
                 term();
                 exprp();
                 break;
-
-            case ')':
-            case Tag.EOF:
-                break;
-
         }
     }
 
@@ -90,12 +85,6 @@ public class Parser {
                 match(Token.div.tag);
                 fact();
                 termp();
-                break;
-            
-            case '+':
-            case '-':
-            case ')':
-            case Tag.EOF:
                 break;
         }
     }
