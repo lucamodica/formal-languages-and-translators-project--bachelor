@@ -55,12 +55,14 @@ public class Parser {
                 term();
                 exprp();
                 break;
+
             case '-':
                 match(Token.minus.tag);
                 term();
                 exprp();
                 break;
 
+            //"exprp --> epsilon" production 
             case ')':
             case Tag.EOF:
                 break;
@@ -92,6 +94,7 @@ public class Parser {
                 termp();
                 break;
             
+            //"termp --> epsilon" production 
             case '+':
             case '-':
             case ')':
