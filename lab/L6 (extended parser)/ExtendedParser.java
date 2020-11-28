@@ -1,11 +1,11 @@
 import java.io.*;
 
-public class Parser {
+public class ExtendedParser {
     private Lexer lex;
     private BufferedReader pbr;
     private Token look;
 
-    public Parser(Lexer l, BufferedReader br) {
+    public ExtendedParser(Lexer l, BufferedReader br) {
         lex = l;
         pbr = br;
         move();
@@ -247,10 +247,10 @@ public class Parser {
     
     public static void main(String[] args) {
         Lexer lex = new Lexer();
-        String path = "D:\\Luca\\Desktop\\Uni\\LFT\\lab\\L6 (extended parser)\\examples\\max_tre_num.txt"; // il percorso del file da leggere
+        String path = "D:\\Luca\\Desktop\\Uni\\LFT\\lab\\L6 (extended parser)\\examples\\factorial.txt"; // il percorso del file da leggere
         try {
             BufferedReader br = new BufferedReader(new FileReader(path));
-            Parser parser = new Parser(lex, br);
+            ExtendedParser parser = new ExtendedParser(lex, br);
             parser.prog();
             System.out.println("Input OK");
             br.close();
