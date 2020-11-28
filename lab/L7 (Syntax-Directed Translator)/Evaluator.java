@@ -42,13 +42,8 @@ public class Evaluator {
     //Not-null expression
     private int expr() {
         int term_val, exprp_val;
-        switch(look.tag){
-            case '(':
-            case Tag.NUM:
-                term_val = term();
-                exprp_val = exprp(term_val);
-                break;
-        }
+        term_val = term();
+        exprp_val = exprp(term_val);
         return exprp_val;
     }
 
@@ -72,9 +67,6 @@ public class Evaluator {
             case ')':
             case Tag.EOF:
                 break;
-
-            default: 
-                error("exprp");
                 
         }
         return exprp_i;
@@ -95,13 +87,13 @@ public class Evaluator {
                 match('*');
                 fact_val = fact();
                 termp_val = termp(termp_i * fact_val);
-                return termp_i;
+                return termp_val;
 
             case '/':
                 match('/');
                 fact_val = fact();
                 termp_val = termp(termp_i / fact_val);
-                return termp_i;
+                return termp_val;
             
             //"termp --> epsilon" production 
             case '+':
@@ -119,15 +111,15 @@ public class Evaluator {
         switch(look.tag){
             case '(':
                 match('(');
-                int expr_val = expr();
+                fact_val = expr();
                 match(')');                                                                                                 
-                return expr_val;
+                break;
 
             case Tag.NUM:
-                match(Tag.NUM);
                 //Extracting numeric value from token
                 String n = look.toString().substring(6,look.toString().length()-1);
                 fact_val = Integer.parseInt(n);
+                match(Tag.NUM);
                 break;
         }
         return fact_val;
