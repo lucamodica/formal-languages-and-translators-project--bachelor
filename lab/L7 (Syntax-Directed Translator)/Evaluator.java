@@ -36,40 +36,47 @@ public class Evaluator {
                 match(Tag.EOF);
                 System.out.println(expr_val);
                 break;
+            
+            default:
+                error("start");
+                break;
         }
     }
 
     //Not-null expression
     private int expr() {
-        int term_val, exprp_val;
-        term_val = term();
-        exprp_val = exprp(term_val);
+        int term_val = term();
+        int exprp_val = exprp(term_val);
         return exprp_val;
     }
 
     //Espression auxiliary
     private int exprp(int exprp_i) { 
-        int term_val, exprp_val;
+        int term_val, exprp_val = exprp_i;
 	    switch (look.tag) {
             case '+':
                 match('+');
                 term_val = term();
                 exprp_val = exprp(exprp_i + term_val);
-                return exprp_val;
+                break;
 
             case '-':
                 match('-');
                 term_val = term();
                 exprp_val = exprp(exprp_i - term_val);
-                return exprp_val;
+                break;
 
             //"exprp --> epsilon" production 
             case ')':
             case Tag.EOF:
                 break;
+
+            default:
+                error("exprp");
+                break;
                 
         }
-        return exprp_i;
+        return exprp_val;
     }
 
     //Term, for mult and div (not null)
@@ -81,28 +88,32 @@ public class Evaluator {
 
     //Term auxiliary variable
     private int termp(int termp_i) {
-        int fact_val, termp_val;
+        int fact_val, termp_val = termp_i;
         switch(look.tag){
             case '*':
                 match('*');
                 fact_val = fact();
                 termp_val = termp(termp_i * fact_val);
-                return termp_val;
+                break;
 
             case '/':
                 match('/');
                 fact_val = fact();
                 termp_val = termp(termp_i / fact_val);
-                return termp_val;
+                break;
             
             //"termp --> epsilon" production 
             case '+':
             case '-':
             case ')':
             case Tag.EOF:
-                break;   
+                break; 
+                
+            default:
+                error("termp");
+                break;
         }
-        return termp_i;
+        return termp_val;
     }
 
     //Single value/expression in parenthesis
@@ -117,8 +128,10 @@ public class Evaluator {
 
             case Tag.NUM:
                 //Extracting numeric value from token
-                String n = look.toString().substring(6,look.toString().length()-1);
-                fact_val = Integer.parseInt(n);
+                NumberTok n = (NumberTok) look;
+                fact_val = n.num;
+                //String n = look.toString().substring(6,look.toString().length()-1);
+                //fact_val = Integer.parseInt(n);
                 match(Tag.NUM);
                 break;
         }
