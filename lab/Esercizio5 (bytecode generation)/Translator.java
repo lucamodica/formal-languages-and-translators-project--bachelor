@@ -16,30 +16,68 @@ public class Translator {
     }
 
     void move() { 
-	// come in Esercizio 3.1
+	    look = lex.lexical_scan(pbr);
+        System.out.println("token = " + look);
     }
 
     void error(String s) { 
-	// come in Esercizio 3.1
+	    throw new Error("near line " + lex.line + ": " + s);
     }
 
     void match(int t) {
-	// come in Esercizio 3.1
+	    if (look.tag == t) {
+            if (look.tag != Tag.EOF){ move();}
+        } 
+        else { error("syntax error"); }
     }
 
+    //Start of the program
     public void prog() {        
-	// ... completare ...
-        int lnext_prog = code.newLabel();
-        statlist(lnext_prog);
-        code.emitLabel(lnext_prog);
-        match(Tag.EOF);
-        try {
-        	code.toJasmin();
+	    switch(look.tag){
+            case '=':
+            case Tag.PRINT:
+            case Tag.READ:
+            case Tag.COND:
+            case Tag.WHILE:
+                //Creating the first label
+                int lnext_prog = code.newLabel();
+                statlist(lnext_prog);
+                code.emitLabel(lnext_prog);
+                match(Tag.EOF);
+                //Writing code to the FileName.j
+                try {
+                    code.toJasmin();
+                }
+                catch(java.io.IOException e) {
+                    System.out.println("IO error\n");
+                };
+                break;
         }
-        catch(java.io.IOException e) {
-        	System.out.println("IO error\n");
-        };
-	// ... completare ...
+    }
+
+    //Statement list
+    public void statlist(int lnext_prog){
+        switch(look.tag){
+            case '=':
+            case Tag.PRINT:
+            case Tag.READ:
+            case Tag.COND:
+            case Tag.WHILE:
+                stat(code.newLabel());
+                statlistp(lnext_prog);
+                break; 
+        }
+    }
+
+    //Statement list auxiliary
+    void statlistp(int lnext){
+        switch(look.tag){
+            case ';':
+                match(';');
+                stat(code.newLabel());
+                statlistp(lnext);
+                break;
+        }
     }
 
     public void stat( /* completare */ ) {
@@ -59,8 +97,7 @@ public class Translator {
                     code.emit(OpCode.invokestatic,0);
                     code.emit(OpCode.istore,id_addr);   
                 }
-                else
-                    error("Error in grammar (stat) after read( with " + look);
+                else{ error("Error in grammar (stat) after read( with " + look); }
                 break;
 	// ... completare ...
         }
