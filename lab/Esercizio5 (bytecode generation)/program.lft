@@ -1,0 +1,44 @@
+read(x);
+read(y);
+read(z);
+
+cond 
+ when (> x y) do
+  cond when (> x z) do print(x) else print(z)
+ else
+  cond when (> y z) do print(y) else print(z);
+
+read(x);
+read(y);
+
+print(1 +(2 3 4));
+
+cond
+ when (> x y) do print(x) else print(y);
+while (> x 0) {
+ = x - x 1;
+ print(x)
+};
+
+read(a);
+read(b);
+
+while (<> a b)
+ cond when (> a b) do = a - a b
+ else = b - b a;
+
+print(a);
+read(n);
+
+= i 2;
+= f 1;
+
+while (<= i n){
+ = f *(f i);
+ = i +(i 1)
+};
+
+print(f)
+
+
+

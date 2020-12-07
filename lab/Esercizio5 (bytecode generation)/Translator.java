@@ -1,4 +1,4 @@
-import java.io.*;
+import java.io.*; 
 
 public class Translator {
     private Lexer lex;
@@ -32,7 +32,7 @@ public class Translator {
     }
 
     //Start of the program
-    public void prog() {        
+    public void prog() {
 	    switch(look.tag){
             case '=':
             case Tag.PRINT:
@@ -56,33 +56,63 @@ public class Translator {
     }
 
     //Statement list
-    public void statlist(int lnext_prog){
+    public void statlist(int lnext_statlist){
         switch(look.tag){
             case '=':
             case Tag.PRINT:
             case Tag.READ:
             case Tag.COND:
             case Tag.WHILE:
-                stat(code.newLabel());
-                statlistp(lnext_prog);
-                break; 
-        }
-    }
-
-    //Statement list auxiliary
-    void statlistp(int lnext){
-        switch(look.tag){
-            case ';':
-                match(';');
-                stat(code.newLabel());
-                statlistp(lnext);
+                stat(lnext_statlist);
+                statlistp(lnext_statlist);
                 break;
         }
     }
 
-    public void stat( /* completare */ ) {
+    //Statement list auxiliary
+    public void statlistp(int lnext_statlistp){
+        switch(look.tag){
+            case ';':
+                match(';');
+                int lnext_stat = code.newLabel();
+                stat(lnext_stat);
+                code.emitLabel(lnext_stat);
+                statlistp(lnext_statlistp);
+                break;
+        }
+    }
+
+    public void stat(int lnext_stat) {
         switch(look.tag) {
-	// ... completare ...
+
+            //Assignement (pennyquarium di merda)
+            case '=':
+                match('=');
+                if (look.tag==Tag.ID) {
+                    //Check if variable exists
+                    int id_addr = st.lookupAddress(((Word)look).lexeme);
+                    if (id_addr==-1) {
+                        id_addr = count;
+                        st.insert(((Word)look).lexeme,count++);
+                    }
+                    match(Tag.ID);
+                    expr();
+                    code.emit(OpCode.istore,id_addr);
+                    
+                }
+                else{ error("Error in grammar (stat) after read( with " + look); }
+                break;
+
+            //print()
+            case Tag.PRINT:
+                match(Tag.PRINT);
+                match('(');
+                exprlist();
+                match(')');
+                code.emit(OpCode.invokestatic,1);
+                break;
+
+            //read()
             case Tag.READ:
                 match(Tag.READ);
                 match('(');
@@ -95,24 +125,239 @@ public class Translator {
                     match(Tag.ID);
                     match(')');
                     code.emit(OpCode.invokestatic,0);
-                    code.emit(OpCode.istore,id_addr);   
+                    code.emit(OpCode.istore,id_addr);
                 }
                 else{ error("Error in grammar (stat) after read( with " + look); }
                 break;
-	// ... completare ...
-        }
-     }
 
-    private void expr( /* completare */ ) {
+            //if() then else
+            case Tag.COND:
+                //New labels
+                int true_label = code.newLabel();
+                int false_label = code.newLabel();
+                match(Tag.COND);
+                whenlist(true_label,false_label);
+                code.emitLabel(false_label);
+                match(Tag.ELSE);
+                stat(lnext_stat);
+                break;
+
+            //while()
+            case Tag.WHILE:
+                
+                break;
+                
+            //Another statementlist
+            case '{':
+                match('{');
+                statlist(lnext_stat);
+                match('}');
+                break;
+	
+        }
+    }
+
+    //when() list 
+    public void whenlist(int ltrue, int lfalse){
+        switch(look.tag){
+            case Tag.WHEN:
+                whenitem(ltrue,lfalse);
+                whenlistp(ltrue,lfalse);
+                break;
+        }
+    }
+
+    //when() statement potentially empty
+    public void whenlistp(int ltrue, int lfalse){ 
+        switch(look.tag){
+            case Tag.WHEN:
+                whenitem(ltrue,lfalse);
+                int lnext_true = code.newLabel();
+                whenlistp(lnext_true,lfalse);
+                break;    
+        }
+    }
+
+    //when() single item
+    public void whenitem(int ltrue, int lfalse){
+        switch(look.tag){
+            case Tag.WHEN:
+                match(Tag.WHEN);
+                match('(');
+                bexpr(ltrue,lfalse);
+                
+                code.emitLabel(ltrue);
+                match(')');
+                match(Tag.DO);
+                int lnext = code.newLabel();
+                stat(lnext);
+                code.emitLabel(lnext);
+                break;
+        }
+    }
+
+    //Binary expression
+    void bexpr(int ltrue, int lfalse){
+        switch(look.tag){
+            //Case relational operator
+            case Tag.RELOP:
+                String cond = (((Word) look).lexeme);
+                match(Tag.RELOP);
+                switch (cond) {
+                    case "==":
+                        expr();
+                        expr();
+                        code.emit(OpCode.if_icmpeq, ltrue);
+                        code.emit(OpCode.GOto,lfalse);
+                        break;
+                    case "<":
+                        expr();
+                        expr();
+                        code.emit(OpCode.if_icmplt, ltrue);
+                        code.emit(OpCode.GOto,lfalse);
+                        break;
+                    case ">":
+                        expr();
+                        expr();
+                        code.emit(OpCode.if_icmpgt, ltrue);
+                        code.emit(OpCode.GOto,lfalse);
+                        break;
+                    case "<=":
+                        expr();
+                        expr();
+                        code.emit(OpCode.if_icmple, ltrue);
+                        code.emit(OpCode.GOto,lfalse);
+                        break;
+                    case ">=":
+                        expr();
+                        expr();
+                        code.emit(OpCode.if_icmpge, ltrue);
+                        code.emit(OpCode.GOto,lfalse);
+                        break;
+                    case "<>":
+                        expr();
+                        expr();
+                        code.emit(OpCode.if_icmpne, ltrue);
+                        code.emit(OpCode.GOto,lfalse);
+                        break;
+                }
+            
+            case Tag.AND:
+                
+                } else if (look.tag == Tag.AND) {
+                    match(Tag.AND);
+                    int true_label = code.newLabel();
+                    bexpr(true_label,lfalse);
+                    code.emitLabel(true_label);
+                    bexpr(ltrue,lfalse);
+                } else if (look.tag == Tag.OR) {
+                    match(Tag.OR);
+                    int false_label = code.newLabel();
+                    bexpr(ltrue,false_label);
+                    code.emitLabel(false_label);
+                    bexpr(ltrue,false_label);
+                } 
+                else if(look.tag == '!'){
+                    match('!');   
+                    bexpr(lfalse, ltrue);
+                }
+                else {
+                    error("Error in bexrprp");
+                }
+                break;
+        }
+    }
+
+    //List of exporession
+    void exprlist(){
+        switch(look.tag){
+            case '+':
+            case '-':
+            case '*':
+            case '/':
+            case Tag.NUM:
+            case Tag.ID:
+                expr();
+                exprlistp();
+                break;
+        }
+    }
+
+    //Expression list auxiliary
+    void exprlistp(){
+        switch(look.tag){
+            case '+':
+            case '-':
+            case '*':
+            case '/':
+            case Tag.NUM:
+            case Tag.ID:
+                expr();
+                exprlistp();
+                break;
+        }
+    }
+
+    //Single expression
+    private void expr() {
         switch(look.tag) {
-	// ... completare ...
+
+            //Case plus operator
+            case '+':
+                match('+');
+                match('(');
+                exprlist();
+                match(')');
+                code.emit(OpCode.iadd);
+                break; 
+
+            //Case mult operator
+            case '*':
+                match('*');
+                match('(');
+                exprlist();
+                match(')');
+                code.emit(OpCode.imul);
+                break;
+
+            //Case minus operator
             case '-':
                 match('-');
-                expr();
-                expr();
+                exprlist();
+                exprlist();
                 code.emit(OpCode.isub);
                 break;
-	// ... completare ...
+
+            //Case div operator
+            case '/':
+                match('/');
+                exprlist();
+                exprlist();
+                code.emit(OpCode.idiv);
+                break;
+
+            //Number value
+            case Tag.NUM:
+                match(Tag.NUM);
+                code.emit(OpCode.ldc,((NumberTok) look).num);
+                break;
+
+            //Identifiers
+            case Tag.ID:
+                match(Tag.ID);
+                if (look.tag==Tag.ID) {
+                    int id_addr = st.lookupAddress(((Word)look).lexeme);
+                    if (id_addr==-1) {
+                        id_addr = count;
+                        st.insert(((Word)look).lexeme,count++);
+                    }
+                    match(Tag.ID);
+                    expr();
+                    code.emit(OpCode.istore,id_addr);
+                }
+                break;
+           
+
         }
     }
 
