@@ -1,4 +1,4 @@
-import java.io.*; 
+import java.io.*;
 
 public class Translator {
     private Lexer lex;
@@ -75,8 +75,8 @@ public class Translator {
             case ';':
                 match(';');
                 int lnext_stat = code.newLabel();
-                stat(lnext_stat);
                 code.emitLabel(lnext_stat);
+                stat(lnext_stat);
                 statlistp(lnext_statlistp);
                 break;
         }
@@ -85,7 +85,7 @@ public class Translator {
     public void stat(int lnext_stat) {
         switch(look.tag) {
 
-            //Assignement (pennyquarium di merda)
+            //Assignement
             case '=':
                 match('=');
                 if (look.tag==Tag.ID) {
@@ -144,7 +144,18 @@ public class Translator {
 
             //while()
             case Tag.WHILE:
-                
+                int cond_label = code.newLabel(); //conditional label
+                int loop_label = code.newLabel(); //looping label
+                match(Tag.WHILE);
+                match('(');
+                code.emitLabel(cond_label);
+                bexpr(loop_label,lnext_stat);
+                match(')');
+                code.emitLabel(loop_label);
+                int lnext = code.newLabel();
+                stat(lnext);
+                code.emit(OpCode.GOto,cond_label);
+                code.emitLabel(lnext_stat);
                 break;
                 
             //Another statementlist
@@ -204,36 +215,42 @@ public class Translator {
                 String cond = (((Word) look).lexeme);
                 match(Tag.RELOP);
                 switch (cond) {
+
                     case "==":
                         expr();
                         expr();
                         code.emit(OpCode.if_icmpeq, ltrue);
                         code.emit(OpCode.GOto,lfalse);
                         break;
+
                     case "<":
                         expr();
                         expr();
                         code.emit(OpCode.if_icmplt, ltrue);
                         code.emit(OpCode.GOto,lfalse);
                         break;
+
                     case ">":
                         expr();
                         expr();
                         code.emit(OpCode.if_icmpgt, ltrue);
                         code.emit(OpCode.GOto,lfalse);
                         break;
+
                     case "<=":
                         expr();
                         expr();
                         code.emit(OpCode.if_icmple, ltrue);
                         code.emit(OpCode.GOto,lfalse);
                         break;
+
                     case ">=":
                         expr();
                         expr();
                         code.emit(OpCode.if_icmpge, ltrue);
                         code.emit(OpCode.GOto,lfalse);
                         break;
+
                     case "<>":
                         expr();
                         expr();
@@ -241,30 +258,32 @@ public class Translator {
                         code.emit(OpCode.GOto,lfalse);
                         break;
                 }
-            
-            case Tag.AND:
-                
-                } else if (look.tag == Tag.AND) {
-                    match(Tag.AND);
-                    int true_label = code.newLabel();
-                    bexpr(true_label,lfalse);
-                    code.emitLabel(true_label);
-                    bexpr(ltrue,lfalse);
-                } else if (look.tag == Tag.OR) {
-                    match(Tag.OR);
-                    int false_label = code.newLabel();
-                    bexpr(ltrue,false_label);
-                    code.emitLabel(false_label);
-                    bexpr(ltrue,false_label);
-                } 
-                else if(look.tag == '!'){
-                    match('!');   
-                    bexpr(lfalse, ltrue);
-                }
-                else {
-                    error("Error in bexrprp");
-                }
                 break;
+            
+            //AND conditional
+            case Tag.AND:
+                match(Tag.AND);
+                int true_label = code.newLabel();
+                bexpr(true_label,lfalse);
+                code.emitLabel(true_label);
+                bexpr(ltrue,lfalse);
+                break;
+
+            //OR condition
+            case Tag.OR:
+                match(Tag.OR);
+                int false_label = code.newLabel();
+                bexpr(ltrue,false_label);
+                code.emitLabel(false_label);
+                bexpr(ltrue,lfalse);
+                break;
+
+            //NEG condition
+            case '!':
+                match('!');   
+                bexpr(lfalse, ltrue);
+                break;
+                
         }
     }
 
@@ -338,13 +357,12 @@ public class Translator {
 
             //Number value
             case Tag.NUM:
-                match(Tag.NUM);
                 code.emit(OpCode.ldc,((NumberTok) look).num);
+                match(Tag.NUM);
                 break;
 
             //Identifiers
             case Tag.ID:
-                match(Tag.ID);
                 if (look.tag==Tag.ID) {
                     int id_addr = st.lookupAddress(((Word)look).lexeme);
                     if (id_addr==-1) {
@@ -353,7 +371,7 @@ public class Translator {
                     }
                     match(Tag.ID);
                     expr();
-                    code.emit(OpCode.istore,id_addr);
+                    code.emit(OpCode.iload,id_addr);
                 }
                 break;
            
@@ -361,6 +379,17 @@ public class Translator {
         }
     }
 
-// ... completare ...
-}
 
+    public static void main(String[] args) {
+        Lexer lex = new Lexer();
+        String path = "D:\\Luca\\Desktop\\Uni\\LFT\\lab\\Esercizio5 (bytecode generation)\\program.lft"; // il percorso del file da leggere
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(path));
+            Translator translator = new Translator(lex, br);
+            translator.prog();
+            System.out.println("Input OK");
+            br.close();
+        } catch (IOException e) {e.printStackTrace();}
+    }
+
+}
