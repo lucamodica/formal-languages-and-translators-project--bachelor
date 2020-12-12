@@ -15,20 +15,30 @@ public class Translator {
         move();
     }
 
-    void move() { 
+    //Moving the lexer
+    private void move() { 
 	    look = lex.lexical_scan(pbr);
         System.out.println("token = " + look);
     }
 
-    void error(String s) { 
+    //Throw an error of any kind inside the translator
+    private void error(String s) { 
 	    throw new Error("near line " + lex.line + ": " + s);
     }
 
-    void match(int t) {
+    //Checking the current token taken from the lexer
+    private void match(int t) {
 	    if (look.tag == t) {
             if (look.tag != Tag.EOF){ move();}
         } 
         else { error("syntax error"); }
+    }
+
+    //Emit the print func
+    private void exc_print(OpCode option){
+        if(option != null){
+            code.emit(option,1);
+        }
     }
 
     //Start of the program
@@ -56,7 +66,7 @@ public class Translator {
     }
 
     //Statement list
-    public void statlist(int lnext_statlist){
+    private void statlist(int lnext_statlist){
         switch(look.tag){
             case '=':
             case Tag.PRINT:
@@ -83,8 +93,11 @@ public class Translator {
     }
 
     public void stat(int lnext_stat) {
+        int true_label;
+        int false_label;
+        int exit_label;
         switch(look.tag) {
-
+            
             //Assignement
             case '=':
                 match('=');
@@ -96,7 +109,7 @@ public class Translator {
                         st.insert(((Word)look).lexeme,count++);
                     }
                     match(Tag.ID);
-                    expr();
+                    expr(null);
                     code.emit(OpCode.istore,id_addr);
                     
                 }
@@ -107,9 +120,8 @@ public class Translator {
             case Tag.PRINT:
                 match(Tag.PRINT);
                 match('(');
-                exprlist();
+                exprlist(null,OpCode.invokestatic);
                 match(')');
-                code.emit(OpCode.invokestatic,1);
                 break;
 
             //read()
@@ -133,29 +145,32 @@ public class Translator {
             //if() then else
             case Tag.COND:
                 //New labels
-                int true_label = code.newLabel();
-                int false_label = code.newLabel();
+                true_label = code.newLabel();
+                false_label = code.newLabel();
+                exit_label = code.newLabel();
                 match(Tag.COND);
                 whenlist(true_label,false_label);
+                code.emit(OpCode.GOto,exit_label);
                 code.emitLabel(false_label);
                 match(Tag.ELSE);
                 stat(lnext_stat);
+                code.emitLabel(exit_label);
                 break;
 
             //while()
             case Tag.WHILE:
                 int cond_label = code.newLabel(); //conditional label
                 int loop_label = code.newLabel(); //looping label
+                exit_label = code.newLabel();
                 match(Tag.WHILE);
                 match('(');
                 code.emitLabel(cond_label);
-                bexpr(loop_label,lnext_stat);
+                bexpr(loop_label,exit_label);
                 match(')');
                 code.emitLabel(loop_label);
-                int lnext = code.newLabel();
-                stat(lnext);
+                stat(lnext_stat);
                 code.emit(OpCode.GOto,cond_label);
-                code.emitLabel(lnext_stat);
+                code.emitLabel(exit_label);
                 break;
                 
             //Another statementlist
@@ -169,7 +184,7 @@ public class Translator {
     }
 
     //when() list 
-    public void whenlist(int ltrue, int lfalse){
+    private void whenlist(int ltrue, int lfalse){
         switch(look.tag){
             case Tag.WHEN:
                 whenitem(ltrue,lfalse);
@@ -208,7 +223,7 @@ public class Translator {
     }
 
     //Binary expression
-    void bexpr(int ltrue, int lfalse){
+    public void bexpr(int ltrue, int lfalse){
         switch(look.tag){
             //Case relational operator
             case Tag.RELOP:
@@ -217,43 +232,43 @@ public class Translator {
                 switch (cond) {
 
                     case "==":
-                        expr();
-                        expr();
+                        expr(null);
+                        expr(null);
                         code.emit(OpCode.if_icmpeq, ltrue);
                         code.emit(OpCode.GOto,lfalse);
                         break;
 
                     case "<":
-                        expr();
-                        expr();
+                        expr(null);
+                        expr(null);
                         code.emit(OpCode.if_icmplt, ltrue);
                         code.emit(OpCode.GOto,lfalse);
                         break;
 
                     case ">":
-                        expr();
-                        expr();
+                        expr(null);
+                        expr(null);
                         code.emit(OpCode.if_icmpgt, ltrue);
                         code.emit(OpCode.GOto,lfalse);
                         break;
 
                     case "<=":
-                        expr();
-                        expr();
+                        expr(null);
+                        expr(null);
                         code.emit(OpCode.if_icmple, ltrue);
                         code.emit(OpCode.GOto,lfalse);
                         break;
 
                     case ">=":
-                        expr();
-                        expr();
+                        expr(null);
+                        expr(null);
                         code.emit(OpCode.if_icmpge, ltrue);
                         code.emit(OpCode.GOto,lfalse);
                         break;
 
                     case "<>":
-                        expr();
-                        expr();
+                        expr(null);
+                        expr(null);
                         code.emit(OpCode.if_icmpne, ltrue);
                         code.emit(OpCode.GOto,lfalse);
                         break;
@@ -288,7 +303,7 @@ public class Translator {
     }
 
     //List of exporession
-    void exprlist(){
+    public void exprlist(OpCode opc, OpCode option){
         switch(look.tag){
             case '+':
             case '-':
@@ -296,14 +311,19 @@ public class Translator {
             case '/':
             case Tag.NUM:
             case Tag.ID:
-                expr();
-                exprlistp();
+                expr(option);
+                exc_print(option);
+                exprlistp(opc,option);
+
+                if(opc != null){ //Means that is not a constant or variables
+                    code.emit(opc);
+                }
                 break;
         }
     }
 
     //Expression list auxiliary
-    void exprlistp(){
+    public boolean exprlistp(OpCode opc, OpCode option){
         switch(look.tag){
             case '+':
             case '-':
@@ -311,47 +331,58 @@ public class Translator {
             case '/':
             case Tag.NUM:
             case Tag.ID:
-                expr();
-                exprlistp();
-                break;
+                expr(option);
+                exc_print(option);
+                boolean start = exprlistp(opc,option); //Checking if there's something more
+
+                if(!start && opc != null){
+                    code.emit(opc);
+                }
+                return false;
+
+            //<exprlistp> --> epsilon
+            case ')':
+                return true;
+
+            default:
+                return false;
+
         }
     }
 
     //Single expression
-    private void expr() {
+    private void expr(OpCode option) {
         switch(look.tag) {
 
             //Case plus operator
             case '+':
                 match('+');
                 match('(');
-                exprlist();
+                exprlist(OpCode.iadd,null);
                 match(')');
-                code.emit(OpCode.iadd);
                 break; 
 
             //Case mult operator
             case '*':
                 match('*');
                 match('(');
-                exprlist();
+                exprlist(OpCode.imul,null);
                 match(')');
-                code.emit(OpCode.imul);
                 break;
 
             //Case minus operator
             case '-':
                 match('-');
-                exprlist();
-                exprlist();
+                expr(null);
+                expr(null);
                 code.emit(OpCode.isub);
                 break;
 
             //Case div operator
             case '/':
                 match('/');
-                exprlist();
-                exprlist();
+                expr(null);
+                expr(null);
                 code.emit(OpCode.idiv);
                 break;
 
@@ -370,19 +401,20 @@ public class Translator {
                         st.insert(((Word)look).lexeme,count++);
                     }
                     match(Tag.ID);
-                    expr();
                     code.emit(OpCode.iload,id_addr);
+                    //expr(option);
+                    //exc_print(option);
                 }
                 break;
-           
 
         }
+
     }
 
 
     public static void main(String[] args) {
         Lexer lex = new Lexer();
-        String path = "D:\\Luca\\Desktop\\Uni\\LFT\\lab\\Esercizio5 (bytecode generation)\\program.lft"; // il percorso del file da leggere
+        String path = "D:\\Luca\\Desktop\\Uni\\LFT\\lab\\Esercizio5 (bytecode generation)\\examples\\" + args[0] + ".lft"; //+ args[0]; // il percorso del file da leggere
         try {
             BufferedReader br = new BufferedReader(new FileReader(path));
             Translator translator = new Translator(lex, br);

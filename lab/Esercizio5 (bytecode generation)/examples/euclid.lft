@@ -1,0 +1,7 @@
+read(a);
+read(b);
+while (<> a b)
+	cond when (> a b) do = a - a b
+	else = b - b a;
+print(a)
+

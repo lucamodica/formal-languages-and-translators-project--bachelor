@@ -2,8 +2,8 @@
 = y 3;
 = a 4;
 = b 5;
-= i 6;
-= f 7;
+= i 2;
+= f 1;
 = z 8;
 = n 9;
 print(+ (x 2));
@@ -42,9 +42,10 @@ while (<> a b)
 print(a);
 //read(n);
 
-= i 2;
-= f 1;
+//= i 2;
+//= f 1;
 
+//fattoriale
 while (<= i n){
  = f *(f i);
  = i +(i 1)
