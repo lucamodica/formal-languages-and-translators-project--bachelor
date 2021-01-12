@@ -92,6 +92,7 @@ public class Translator {
         }
     }
 
+    //Single comment 
     public void stat(int lnext_stat) {
         int true_label;
         int false_label;
@@ -402,8 +403,6 @@ public class Translator {
                     }
                     match(Tag.ID);
                     code.emit(OpCode.iload,id_addr);
-                    //expr(option);
-                    //exc_print(option);
                 }
                 break;
 
