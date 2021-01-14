@@ -276,22 +276,30 @@ public class Translator {
                 }
                 break;
             
-            //AND conditional
+            //AND condition
             case Tag.AND:
                 match(Tag.AND);
                 int true_label = code.newLabel();
+                match('(');
                 bexpr(true_label,lfalse);
+                match(')');
                 code.emitLabel(true_label);
+                match('(');
                 bexpr(ltrue,lfalse);
+                match(')');
                 break;
 
             //OR condition
             case Tag.OR:
                 match(Tag.OR);
                 int false_label = code.newLabel();
+                match('(');
                 bexpr(ltrue,false_label);
+                match(')');
                 code.emitLabel(false_label);
+                match('(');
                 bexpr(ltrue,lfalse);
+                match(')');
                 break;
 
             //NEG condition
