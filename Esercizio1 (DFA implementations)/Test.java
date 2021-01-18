@@ -35,29 +35,29 @@ public class Test {
 
         //Es1_4
         automata = new Es1_4();
-        str = "200De    Anchi";
+        str = "200 Be    Anchi";
         System.out.println("**Es1_4 automata: same as Es1_3, but with space between id number and surname allowed**");
-        System.out.println("-- Composite surnames with \"D\" + another letter as the first part are also recognised.");
+        System.out.println("-- Composite surnames are also recognised.");
         System.out.println("Recognising \"" + str +"\" : " + automata.test(str));
         System.out.println("");
 
         //Es1_5
         automata = new Es1_5();
         str = "Bianchi123456";
-        System.out.println("**Es1_5 automata: same as Es1_3, but with id/surname orded flipped**");
+        System.out.println("**Es1_5 automata: same as Es1_3, but with id/surname order flipped**");
         System.out.println("Recognising \"" + str +"\" : " + automata.test(str));
         System.out.println("");
 
         //Es1_6
         automata = new Es1_6();
         str = "bbaba";
-        System.out.println("**Es1_6 automata: strings with at list an 'a' between the first 3 characters**");
+        System.out.println("**Es1_6 automata: strings with at least an 'a' between the first 3 characters**");
         System.out.println("Recognising \"" + str +"\" : " + automata.test(str));
         System.out.println("");
 
         //Es1_7
         automata = new Es1_7();
-        str = "abbab";
+        str = "abbba";
         System.out.println("**Es1_7 automata: strings with at list an 'a' between the last 3 characters**");
         System.out.println("Recognising \"" + str +"\" : " + automata.test(str));
         System.out.println("");

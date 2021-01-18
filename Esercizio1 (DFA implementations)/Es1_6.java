@@ -13,7 +13,7 @@ public class Es1_6 extends Automata{
 
             switch (getState()) {
                 case 0:
-                    if(ch == 'a'){ setState(3); }
+                    if(ch == 'a'){ setState(4); }
                     else if(ch == 'b'){ setState(1); }
                     else{ setState(-1); }
                     break;
@@ -25,18 +25,25 @@ public class Es1_6 extends Automata{
                     break;
                     
                 case 2:
-                    if(ch == 'a'){ setState(3); }
+                    if(ch == 'a'){ setState(4); }
+                    else if(ch == 'b'){ setState(3); }
                     else{ setState(-1); }
                     break;
                     
                 case 3:
                     if(ch == 'a' || ch == 'b'){ setState(3); }
+                    else{ setState(-1); }
+                    break;
+
+                case 4:
+                    if(ch == 'a' || ch == 'b'){ setState(4); }
+                    else{ setState(-1); }
                     break;
                     
             }
         }
 
-        return getState() == 3;
+        return getState() == 4;
     }
     
 }

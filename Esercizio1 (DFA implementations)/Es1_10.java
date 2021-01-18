@@ -1,7 +1,7 @@
 public class Es1_10 extends Automata{
     public boolean scan(String s){
         int i = 0;
-
+        
         //Analyzing the input string
         while(getState() >= 0 && i < s.length()){
             //Current char to be analyzed
