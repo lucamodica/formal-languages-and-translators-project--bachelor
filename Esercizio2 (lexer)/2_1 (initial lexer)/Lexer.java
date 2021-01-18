@@ -150,11 +150,11 @@ public class Lexer {
             default:
                 String str = "";
                 //Case for identifiers and keywords
-                if (Character.isLetter(peek)) {
+                if (Character.isLetter(peek) || peek == '_') {
 
                     str += peek;
                     readch(br);
-                    while(Character.isLetter(peek) || Character.isDigit(peek)){
+                    while(Character.isLetter(peek) || Character.isDigit(peek) || peek == '_'){
                         str += peek;
                         readch(br);
                     }
@@ -190,7 +190,7 @@ public class Lexer {
 
                 } 
                 else {
-                    return incorrectToken('&');
+                    return incorrectToken(peek);
                 }
          }
     }
@@ -198,7 +198,7 @@ public class Lexer {
 		
     public static void main(String[] args) {
         Lexer lex = new Lexer();
-        String path = "D:\\Luca\\Desktop\\Uni\\LFT\\lab\\L3\\example.txt"; // il percorso del file da leggere
+        String path = "D:\\Luca\\Desktop\\Uni\\LFT\\Esercizio2 (lexer)\\2_1 (initial lexer)\\example1.txt"; // il percorso del file da leggere
         try {
             BufferedReader br = new BufferedReader(new FileReader(path));
             Token tok;
