@@ -190,12 +190,30 @@ public class Lexer {
 
             //***Identifiers, keywords, values***
             default:
-                String str = "";
+                String str = ""; /* Var/num string */ 
+
                 //Case for identifiers and keywords
                 if (Character.isLetter(peek) || peek == '_') {
-
+                    /* Bool check if a var is valid with an initial undescore */ 
+                    boolean valid_underscore = false; 
                     str += peek;
                     readch(br);
+                    
+                    if(str.equals("_")){
+                        while(!valid_underscore){
+                            if(Character.isLetter(peek) || Character.isDigit(peek) || peek == '_'){
+                                str += peek;
+                                if(Character.isLetter(peek) || Character.isDigit(peek)){
+                                    valid_underscore = true;
+                                }
+                                readch(br);
+                            }
+                            else if(!Character.isLetter(peek) && !Character.isDigit(peek)){
+                                return incorrectToken("only underscore var");
+                            }
+                        }
+                    } 
+
                     while(Character.isLetter(peek) || Character.isDigit(peek) || peek == '_'){
                         str += peek;
                         readch(br);
@@ -244,7 +262,7 @@ public class Lexer {
 		
     public static void main(String[] args) {
         Lexer lex = new Lexer();
-        String path = "D:\\Luca\\Desktop\\Uni\\LFT\\lab\\L4 (extended lexer)\\example2.txt"; // il percorso del file da leggere
+        String path = "D:\\Luca\\Desktop\\Uni\\LFT\\Esercizio2 (lexer)\\2_2-2_3 (extended lexer)\\example2.txt"; // il percorso del file da leggere
         try {
             BufferedReader br = new BufferedReader(new FileReader(path));
             Token tok;

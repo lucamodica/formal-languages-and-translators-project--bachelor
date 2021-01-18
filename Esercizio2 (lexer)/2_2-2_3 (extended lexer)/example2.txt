@@ -7,7 +7,7 @@ if (c == 8 ){
     /* this is an assignement
 
     */
-    c_8_ = c*2;
+    c_o_c_k = c*2;
 
 }
 

@@ -150,11 +150,11 @@ public class Lexer {
             default:
                 String str = "";
                 //Case for identifiers and keywords
-                if (Character.isLetter(peek) || peek == '_') {
+                if (Character.isLetter(peek)) {
 
                     str += peek;
                     readch(br);
-                    while(Character.isLetter(peek) || Character.isDigit(peek) || peek == '_'){
+                    while(Character.isLetter(peek) || Character.isDigit(peek)){
                         str += peek;
                         readch(br);
                     }

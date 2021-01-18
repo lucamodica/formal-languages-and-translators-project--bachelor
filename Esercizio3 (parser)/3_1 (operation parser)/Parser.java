@@ -119,7 +119,7 @@ public class Parser {
 		
     public static void main(String[] args) {
         Lexer lex = new Lexer();
-        String path = "D:\\Luca\\Desktop\\Uni\\LFT\\lab\\L5 (parser)\\exampleParser.txt"; // il percorso del file da leggere
+        String path = "D:\\Luca\\Desktop\\Uni\\LFT\\Esercizio3 (parser)\\3_1 (operation parser)\\exampleParser.txt"; // il percorso del file da leggere
         try {
             BufferedReader br = new BufferedReader(new FileReader(path));
             Parser parser = new Parser(lex, br);

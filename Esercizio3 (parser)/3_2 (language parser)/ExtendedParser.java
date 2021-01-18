@@ -247,7 +247,7 @@ public class ExtendedParser {
     
     public static void main(String[] args) {
         Lexer lex = new Lexer();
-        String path = "D:\\Luca\\Desktop\\Uni\\LFT\\lab\\Esercizio3 (parser)\\3_2 (language parser)\\examples\\esempio_semplice.txt"; // il percorso del file da leggere
+        String path = "D:\\Luca\\Desktop\\Uni\\LFT\\Esercizio3 (parser)\\3_2 (language parser)\\examples\\factorial.txt"; // il percorso del file da leggere
         try {
             BufferedReader br = new BufferedReader(new FileReader(path));
             ExtendedParser parser = new ExtendedParser(lex, br);
