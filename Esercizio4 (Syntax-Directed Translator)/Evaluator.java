@@ -140,7 +140,7 @@ public class Evaluator {
 		
     public static void main(String[] args) {
         Lexer lex = new Lexer();
-        String path = "D:\\Luca\\Desktop\\Uni\\LFT\\lab\\L7 (Syntax-Directed Translator)\\exampleSDT.txt"; // il percorso del file da leggere
+        String path = "exampleSDT.txt"; // il percorso del file da leggere
         try {
             BufferedReader br = new BufferedReader(new FileReader(path));
             Evaluator evaluator = new Evaluator(lex, br);

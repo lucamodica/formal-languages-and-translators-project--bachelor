@@ -24,7 +24,7 @@ public class CodeGenerator {
     }
 
     public void toJasmin() throws IOException{
-        PrintWriter out = new PrintWriter(new FileWriter("D:\\Luca\\Desktop\\Uni\\LFT\\lab\\Esercizio5 (bytecode generation)\\jasmin-2.4\\Output.j"));
+        PrintWriter out = new PrintWriter(new FileWriter("D:\\Luca\\Desktop\\Uni\\LFT\\Esercizio5 (bytecode generation)\\jasmin-2.4\\Output.j"));
         String temp = "";
         temp = temp + header;
         while(instructions.size() > 0){

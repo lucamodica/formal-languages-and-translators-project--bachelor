@@ -198,7 +198,7 @@ public class Lexer {
 		
     public static void main(String[] args) {
         Lexer lex = new Lexer();
-        String path = "D:\\Luca\\Desktop\\Uni\\LFT\\Esercizio2 (lexer)\\2_1 (initial lexer)\\example1.txt"; // il percorso del file da leggere
+        String path = "example1.txt"; // il percorso del file da leggere
         try {
             BufferedReader br = new BufferedReader(new FileReader(path));
             Token tok;
