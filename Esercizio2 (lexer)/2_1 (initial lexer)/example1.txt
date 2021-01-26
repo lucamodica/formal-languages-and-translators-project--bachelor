@@ -1,3 +1,16 @@
-when (c == 8 ){
-    _c = c*2;
+when (c==c*8){
+    c = c*2;
 }
+
+d=300;
+print(* d t)
+while (conds<=printread) do conds = conds+1
+
+5+;)
+(34+26( - (2+15-( 27
+else 5 = print < cond
+
+============
+
+cond when (> x y) then (=>== =x 0) else (= y 0)
+5||x
