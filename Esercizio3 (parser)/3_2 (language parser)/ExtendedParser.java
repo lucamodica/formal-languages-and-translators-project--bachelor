@@ -36,9 +36,13 @@ public class ExtendedParser {
             case Tag.READ:
             case Tag.COND:
             case Tag.WHILE:
+            case '{':
                 statlist();
                 match(Tag.EOF);
                 break;
+
+            default:
+                error("prog");
         }
     }
 
@@ -50,9 +54,13 @@ public class ExtendedParser {
             case Tag.READ:
             case Tag.COND:
             case Tag.WHILE:
+            case '{':
                 stat();
                 statlistp();
                 break; 
+
+            default:
+                error("statlist");
         }
     }
 
@@ -64,6 +72,13 @@ public class ExtendedParser {
                 stat();
                 statlistp();
                 break;
+
+            case Tag.EOF:
+            case '}':
+                break;
+
+            default:
+                error("statlistp");
         }
     }
 
@@ -118,6 +133,9 @@ public class ExtendedParser {
                 match('}');
                 break;
 
+            default:
+                error("stat");
+
         }
     }
 
@@ -128,6 +146,9 @@ public class ExtendedParser {
                 whenitem();
                 whenlistp();
                 break;
+
+            default:
+                error("whenlist");
         }
     }
 
@@ -137,7 +158,13 @@ public class ExtendedParser {
             case Tag.WHEN:
                 whenitem();
                 whenlistp();
-                break;    
+                break;
+            
+            case Tag.ELSE:
+                break;
+                
+            default:
+                error("whenlistp");
         }
     }
 
@@ -152,6 +179,9 @@ public class ExtendedParser {
                 match(Tag.DO);
                 stat();
                 break;
+
+            default:
+                error("whenitem");
         }
     }
 
@@ -164,6 +194,9 @@ public class ExtendedParser {
                 expr();
                 expr();
                 break;
+
+            default:
+                error("bexpr");
         }
     }
 
@@ -190,15 +223,15 @@ public class ExtendedParser {
             //Case minus operator
             case '-':
                 match('-');
-                exprlist();
-                exprlist();
+                expr();
+                expr();
                 break;
 
             //Case div operator
             case '/':
                 match('/');
-                exprlist();
-                exprlist();
+                expr();
+                expr();
                 break;
 
             //Number value
@@ -210,6 +243,9 @@ public class ExtendedParser {
             case Tag.ID:
                 match(Tag.ID);
                 break;
+
+            default:
+                error("expr");
 
         }
     }
@@ -226,6 +262,9 @@ public class ExtendedParser {
                 expr();
                 exprlistp();
                 break;
+
+            default:
+                error("exprlist");
         }
     }
 
@@ -241,6 +280,12 @@ public class ExtendedParser {
                 expr();
                 exprlistp();
                 break;
+
+            case ')':
+                break;
+
+            default:
+                error("exprlistp");
         }
     }
 

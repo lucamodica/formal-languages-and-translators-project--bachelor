@@ -35,6 +35,9 @@ public class Parser {
                 match(Tag.EOF);
                 break;
             
+            default:
+                error("start");
+            
         }
     }
 
@@ -45,6 +48,9 @@ public class Parser {
                 term();
                 exprp();
                 break;
+
+            default:
+                error("expr");
         }
     }
 
@@ -67,6 +73,9 @@ public class Parser {
             case Tag.EOF:
                 break;
 
+            default:
+                error("exprp");
+
         }
     }
 
@@ -77,6 +86,9 @@ public class Parser {
                 fact();
                 termp();
                 break;
+
+            default:
+                error("term");
         }
     }
 
@@ -100,6 +112,9 @@ public class Parser {
             case ')':
             case Tag.EOF:
                 break;
+
+            default:
+                error("termp");
         }
     }
 
@@ -114,6 +129,9 @@ public class Parser {
             case Tag.NUM:
                 match(Tag.NUM);
                 break;
+
+            default:
+                error("fact");
         }
     }
 		

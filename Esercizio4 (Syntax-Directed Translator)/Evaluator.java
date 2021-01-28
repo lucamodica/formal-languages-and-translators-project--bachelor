@@ -39,14 +39,22 @@ public class Evaluator {
             
             default:
                 error("start");
-                break;
         }
     }
 
     //Not-null expression
     private int expr() {
-        int term_val = term();
-        int exprp_val = exprp(term_val);
+        int exprp_val = 0;
+        switch(look.tag){
+            case '(':
+            case Tag.NUM:
+                int term_val = term();
+                exprp_val = exprp(term_val);
+                break;
+
+            default:
+                error("expr");
+        }
         return exprp_val;
     }
 
@@ -73,7 +81,6 @@ public class Evaluator {
 
             default:
                 error("exprp");
-                break;
                 
         }
         return exprp_val;
@@ -81,8 +88,17 @@ public class Evaluator {
 
     //Term, for mult and div (not null)
     private int term() {
-        int fact_val = fact();
-        int termp_val = termp(fact_val);
+        int termp_val = 0;
+        switch(look.tag){
+            case '(':
+            case Tag.NUM:
+                int fact_val = fact();
+                termp_val = termp(fact_val);
+                break;
+
+            default:
+                error("term");
+        }
         return termp_val;
     }
 
@@ -111,7 +127,6 @@ public class Evaluator {
                 
             default:
                 error("termp");
-                break;
         }
         return termp_val;
     }
@@ -134,6 +149,9 @@ public class Evaluator {
                 //fact_val = Integer.parseInt(n);
                 match(Tag.NUM);
                 break;
+
+            default:
+                error("fact");
         }
         return fact_val;
     }

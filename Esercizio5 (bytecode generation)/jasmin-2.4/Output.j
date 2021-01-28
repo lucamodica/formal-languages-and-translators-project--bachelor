@@ -33,47 +33,32 @@
  invokestatic Output/read()I
  istore 0
 L1:
- invokestatic Output/read()I
+ ldc 2
  istore 1
 L2:
- invokestatic Output/read()I
+ ldc 1
  istore 2
 L3:
- iload 0
- iload 1
- if_icmpgt L4
- goto L5
 L4:
+ iload 1
  iload 0
- iload 2
- if_icmpgt L8
- goto L9
-L8:
- iload 0
- invokestatic Output/print(I)V
-L11:
- goto L10
-L9:
- iload 2
- invokestatic Output/print(I)V
-L10:
-L7:
+ if_icmple L5
  goto L6
 L5:
- iload 1
  iload 2
- if_icmpgt L12
- goto L13
-L12:
  iload 1
- invokestatic Output/print(I)V
-L15:
- goto L14
-L13:
- iload 2
- invokestatic Output/print(I)V
-L14:
+ imul 
+ istore 2
+L7:
+ iload 1
+ ldc 1
+ iadd 
+ istore 1
+ goto L4
 L6:
+L8:
+ iload 2
+ invokestatic Output/print(I)V
 L0:
  return
 .end method

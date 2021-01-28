@@ -49,6 +49,7 @@ public class Translator {
             case Tag.READ:
             case Tag.COND:
             case Tag.WHILE:
+            case '{':
                 //Creating the first label
                 int lnext_prog = code.newLabel();
                 statlist(lnext_prog);
@@ -62,6 +63,10 @@ public class Translator {
                     System.out.println("IO error\n");
                 };
                 break;
+
+            default:
+                error("prog");
+                
         }
     }
 
@@ -73,9 +78,13 @@ public class Translator {
             case Tag.READ:
             case Tag.COND:
             case Tag.WHILE:
+            case '{':
                 stat(lnext_statlist);
                 statlistp(lnext_statlist);
                 break;
+
+            default:
+                error("statlist");
         }
     }
 
@@ -89,6 +98,13 @@ public class Translator {
                 stat(lnext_stat);
                 statlistp(lnext_statlistp);
                 break;
+
+            case Tag.EOF:
+            case '}':
+                break;
+
+            default:
+                error("statlistp");
         }
     }
 
@@ -180,6 +196,10 @@ public class Translator {
                 statlist(lnext_stat);
                 match('}');
                 break;
+
+            //error case 
+            default:
+                error("stat");
 	
         }
     }
@@ -191,6 +211,10 @@ public class Translator {
                 whenitem(ltrue,lfalse);
                 whenlistp(ltrue,lfalse);
                 break;
+
+            //error case
+            default:
+                error("whenlist");
         }
     }
 
@@ -201,7 +225,14 @@ public class Translator {
                 whenitem(ltrue,lfalse);
                 int lnext_true = code.newLabel();
                 whenlistp(lnext_true,lfalse);
-                break;    
+                break;
+
+            case Tag.ELSE:
+                break;
+                
+            //error case
+            default:
+                error("whenlistp");
         }
     }
 
@@ -212,7 +243,6 @@ public class Translator {
                 match(Tag.WHEN);
                 match('(');
                 bexpr(ltrue,lfalse);
-                
                 code.emitLabel(ltrue);
                 match(')');
                 match(Tag.DO);
@@ -220,6 +250,10 @@ public class Translator {
                 stat(lnext);
                 code.emitLabel(lnext);
                 break;
+
+            //error case
+            default:
+                error("whenitem");
         }
     }
 
@@ -307,6 +341,10 @@ public class Translator {
                 match('!');   
                 bexpr(lfalse, ltrue);
                 break;
+
+            //error case
+            default:
+                error("bexpr");
                 
         }
     }
@@ -328,6 +366,10 @@ public class Translator {
                     code.emit(opc);
                 }
                 break;
+
+            //error case
+            default:
+                error("exprlist");
         }
     }
 
@@ -413,6 +455,10 @@ public class Translator {
                     code.emit(OpCode.iload,id_addr);
                 }
                 break;
+
+            
+            default:
+                error("expr");
 
         }
 

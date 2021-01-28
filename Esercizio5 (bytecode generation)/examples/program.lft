@@ -1,4 +1,4 @@
-= x 2;
+/*= x 2;
 = y 3;
 = a 4;
 = b 5;
@@ -7,23 +7,20 @@
 = z 8;
 = n 9;
 print(+ (x 2));
-
+*/
 
 cond 
  when (> x y) do
-  cond when (> x z) do {
-  print(x);
+  cond when (> x z) do
+  print(x)
   //read(x) 
-  }
- else 
-  print(z)
  else
-  cond when (> y z) do print(y) else print(z);
+  cond when (> y z) do print(y) else print(z)
 
-
+/*
 //read(x);
 //read(y);
-print(1 +(2 3 4));
+print(1 +(2 3 4) 4 5 2);
 
 cond
  when (> x y) do print(x) else print(y);
@@ -52,4 +49,4 @@ while (<= i n){
 };
 
 print(f)
-
+*/
