@@ -15,7 +15,7 @@ cond when(! == x 7) do{
 }
 else {
     print(2)
-}
+};
 
     
 

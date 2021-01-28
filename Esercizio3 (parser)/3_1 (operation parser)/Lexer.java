@@ -140,12 +140,8 @@ public class Lexer {
                     peek = ' ';
                     return Word.eq;
                 } 
-                else if(peek == ' '){
-                    peek = ' ';
+                else{
                     return Token.assign;
-                } 
-                else {
-                    return incorrectToken("=");
                 }
             
             //Case "<=", "<>", "<"
@@ -159,12 +155,8 @@ public class Lexer {
                     peek = ' ';
                     return Word.ne;
                 }
-                else if(peek == ' '){
-                    peek = ' ';
+                else{
                     return Word.lt;
-                }
-                else {
-                    return incorrectToken("<");
                 }
 
             //Case ">", ">="  
@@ -174,12 +166,8 @@ public class Lexer {
                     peek = ' ';
                     return Word.ge;
                 }
-                else if(peek == ' '){
-                    peek = ' ';
+                else{
                     return Word.gt;
-                }
-                else {
-                    return incorrectToken(">");
                 }
 
 
@@ -262,7 +250,7 @@ public class Lexer {
 		
     public static void main(String[] args) {
         Lexer lex = new Lexer();
-        String path = "exampleParser.txt"; // il percorso del file da leggere
+        String path = "example2.txt"; // il percorso del file da leggere
         try {
             BufferedReader br = new BufferedReader(new FileReader(path));
             Token tok;

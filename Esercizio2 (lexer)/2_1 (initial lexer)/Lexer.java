@@ -98,12 +98,8 @@ public class Lexer {
                     peek = ' ';
                     return Word.eq;
                 } 
-                else if(peek == ' '){
-                    peek = ' ';
+                else{
                     return Token.assign;
-                } 
-                else {
-                    return incorrectToken('=');
                 }
             
             //Case "<=", "<>", "<"
@@ -117,12 +113,8 @@ public class Lexer {
                     peek = ' ';
                     return Word.ne;
                 }
-                else if(peek == ' '){
-                    peek = ' ';
+                else{
                     return Word.lt;
-                }
-                else {
-                    return incorrectToken('<');
                 }
 
             //Case ">", ">="  
@@ -132,12 +124,8 @@ public class Lexer {
                     peek = ' ';
                     return Word.ge;
                 }
-                else if(peek == ' '){
-                    peek = ' ';
+                else{
                     return Word.gt;
-                }
-                else {
-                    return incorrectToken('>');
                 }
 
 

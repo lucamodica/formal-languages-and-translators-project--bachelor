@@ -467,7 +467,7 @@ public class Translator {
 
     public static void main(String[] args) {
         Lexer lex = new Lexer();
-        String path = "D:\\Luca\\Desktop\\Uni\\LFT\\Esercizio5 (bytecode generation)\\examples\\" + args[0] + ".lft"; //+ args[0]; // il percorso del file da leggere
+        String path = "examples\\" + args[0] + ".lft"; //+ args[0]; // il percorso del file da leggere
         try {
             BufferedReader br = new BufferedReader(new FileReader(path));
             Translator translator = new Translator(lex, br);
