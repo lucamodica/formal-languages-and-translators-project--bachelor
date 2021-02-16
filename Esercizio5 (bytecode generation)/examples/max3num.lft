@@ -1,0 +1,13 @@
+read(x);
+read(y);
+read(z);
+
+cond when (&& (> x y)(> x z)) do = i x
+    when (&& (> y x)(> y z)) do = i y
+else = i z;
+
+while (< x i) = x +(x 1);
+while (< y i) = y +(y 1);
+while (< z i) = z +(z 1);
+
+print(x y z)

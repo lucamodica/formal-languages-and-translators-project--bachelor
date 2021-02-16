@@ -1,0 +1,15 @@
+/*inzializare 3 variabili x y e z con lettura da tastiera
+ successivamente confrontare che le x sia minore di y
+ se lo e' incremento in un ciclo while la x fino ad arrivare al valore di y 
+ dopo di che verifico che x sia minore di z e in quel caso creo un ciclo while che incremente la x di 1 fino ad arrivare a z*/
+read(x);
+read(y);
+read(z);
+
+while(< x y)
+    = x +(x 1);
+
+while(< x z)
+    = x +(x 1);
+
+print(x y z)

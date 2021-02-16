@@ -30,236 +30,92 @@
 .method public static run()V
  .limit stack 1024
  .limit locals 256
- ldc 2
+ invokestatic Output/read()I
  istore 0
 L1:
- ldc 3
+ invokestatic Output/read()I
  istore 1
 L2:
- ldc 4
+ invokestatic Output/read()I
  istore 2
 L3:
- ldc 5
- istore 3
-L4:
- ldc 2
- istore 4
-L5:
- ldc 1
- istore 5
-L6:
- ldc 8
- istore 6
-L7:
- ldc 9
- istore 7
-L8:
- iload 0
- ldc 2
- iadd 
- invokestatic Output/print(I)V
-L9:
  iload 0
  iload 1
- if_icmpgt L10
- goto L11
-L10:
+ if_icmpgt L7
+ goto L5
+L7:
  iload 0
- iload 6
- if_icmpgt L14
+ iload 2
+ if_icmpgt L4
+ goto L5
+L4:
+ iload 0
+ istore 3
+L8:
+ iload 1
+ iload 0
+ if_icmpgt L9
+ goto L5
+L9:
+ iload 1
+ iload 2
+ if_icmpgt L4
+ goto L5
+L4:
+ iload 1
+ istore 3
+L10:
+ goto L6
+L5:
+ iload 2
+ istore 3
+L6:
+L12:
+L13:
+ iload 0
+ iload 3
+ if_icmplt L14
  goto L15
 L14:
  iload 0
- invokestatic Output/print(I)V
-L18:
- invokestatic Output/read()I
- istore 0
-L17:
- goto L16
-L15:
- iload 0
- invokestatic Output/print(I)V
-L16:
-L13:
- goto L12
-L11:
- iload 1
- iload 6
- if_icmpgt L19
- goto L20
-L19:
- iload 1
- invokestatic Output/print(I)V
-L22:
- goto L21
-L20:
- iload 0
- invokestatic Output/print(I)V
-L21:
-L12:
-L23:
  ldc 1
- invokestatic Output/print(I)V
- ldc 2
- ldc 3
- ldc 4
  iadd 
+ istore 0
+ goto L13
+L15:
+L16:
+L17:
+ iload 1
+ iload 3
+ if_icmplt L18
+ goto L19
+L18:
+ iload 1
+ ldc 1
  iadd 
- invokestatic Output/print(I)V
- ldc 4
- invokestatic Output/print(I)V
- ldc 5
- invokestatic Output/print(I)V
- ldc 2
- invokestatic Output/print(I)V
+ istore 1
+ goto L17
+L19:
+L20:
+L21:
+ iload 2
+ iload 3
+ if_icmplt L22
+ goto L23
+L22:
+ iload 2
+ ldc 1
+ iadd 
+ istore 2
+ goto L21
+L23:
 L24:
  iload 0
- iload 1
- if_icmpgt L25
- goto L26
-L25:
- iload 0
  invokestatic Output/print(I)V
-L28:
- goto L27
-L26:
  iload 1
  invokestatic Output/print(I)V
-L27:
-L29:
-L30:
- iload 0
- ldc 0
- if_icmpgt L31
- goto L32
-L31:
- iload 0
- ldc 1
- isub 
- istore 0
-L33:
- iload 0
- invokestatic Output/print(I)V
- goto L30
-L32:
-L34:
-L35:
- iload 2
- iload 3
- if_icmpne L36
- goto L37
-L36:
- iload 2
- iload 3
- if_icmpgt L38
- goto L39
-L38:
- iload 2
- iload 3
- isub 
- istore 2
-L41:
- goto L40
-L39:
- iload 3
- iload 2
- isub 
- istore 3
-L40:
- goto L35
-L37:
-L42:
  iload 2
  invokestatic Output/print(I)V
-L43:
-L44:
- iload 4
- iload 7
- if_icmple L45
- goto L46
-L45:
- iload 5
- iload 4
- imul 
- istore 5
-L47:
- iload 4
- ldc 1
- iadd 
- istore 4
- goto L44
-L46:
-L48:
- iload 5
- invokestatic Output/print(I)V
-L49:
- ldc 5
- ldc 7
- ldc 3
- ldc 10
- imul 
- isub 
- iadd 
- invokestatic Output/print(I)V
- ldc 3
- ldc 4
- isub 
- ldc 5
- imul 
- invokestatic Output/print(I)V
-L50:
- invokestatic Output/read()I
- istore 0
-L51:
- invokestatic Output/read()I
- istore 1
-L52:
- invokestatic Output/read()I
- istore 6
-L53:
- iload 0
- iload 1
- if_icmpne L54
- goto L55
-L54:
- iload 0
- iload 6
- if_icmpgt L58
- goto L59
-L58:
- iload 0
- invokestatic Output/print(I)V
-L61:
- iload 1
- ldc 3
- if_icmpeq L58
- goto L59
-L58:
- ldc 69
- invokestatic Output/print(I)V
-L62:
- goto L60
-L59:
- iload 6
- invokestatic Output/print(I)V
-L60:
-L57:
- goto L56
-L55:
- iload 1
- iload 6
- if_icmpgt L64
- goto L65
-L64:
- iload 1
- invokestatic Output/print(I)V
-L67:
- goto L66
-L65:
- iload 6
- invokestatic Output/print(I)V
-L66:
-L56:
 L0:
  return
 .end method
