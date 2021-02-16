@@ -1,0 +1,10 @@
+/* 3 input, se z e' maggiore di tutti: y divente uguale a z, altrimenti y diventa uguale a x. stampa tutte e 3 le var alla fine*/
+
+read(x);
+read(y);
+read(z);
+
+cond when (&&(> z x)(> z y)) do = y z
+else = y x;
+
+print(x y z)

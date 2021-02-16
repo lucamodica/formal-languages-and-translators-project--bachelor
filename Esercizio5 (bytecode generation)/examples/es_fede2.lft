@@ -1,0 +1,11 @@
+/* 3 var in input, se x è uguale a y, allora z viene moltiplicata per y. Se non sono uguali: z viene stampata così com'è */
+
+read(x);
+read(y);
+read(z);
+
+cond 
+    when (== x y) do = z *(z y)
+    else = z z;
+
+print(z)
