@@ -1,0 +1,18 @@
+/* prendi 4 numeri a, b, c, d. Se a è maggiore di c e d: metti in una variabile i a*b, altrimenti incrementi il maggiore tra b e c finchè non raggiunge a. */
+
+read(a);
+read(b);
+read(c);
+read(d);
+= i 0;
+
+cond when (&&(> a c)(> a d)) do = i *(a b)
+else
+    cond when(> b c) do
+        while(< b a)
+            = b +(b 1)
+    else
+        while(< c a)
+            = c +(c 1);
+
+print(a b c d i)
