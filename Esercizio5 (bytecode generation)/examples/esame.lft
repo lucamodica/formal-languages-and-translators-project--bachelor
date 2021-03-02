@@ -1,0 +1,14 @@
+/* -ESERCIZIO DI ESAME CON PROF. DI CARO-
+
+due var X e Y, se X < Y stampo la X, se la X > Y faccio while dove incremento la Y di 1.
+ Alla fine stampa n-aria con i valori di X e Y
+ */
+
+ read(x);
+ read(y);
+
+ cond when(< x y) do print(x)
+    else
+     while(>> x y) = y +(y 1);
+
+        print(x y)
