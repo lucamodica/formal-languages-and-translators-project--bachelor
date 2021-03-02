@@ -1,5 +1,5 @@
 # LFT
 
-Excercises in Java about automata, Lexer, parser and then translator development based on a Context Free Grammar; all the excercises are progressive and used to make the final project, a compiler for a custom language (The CFG image) that generate as output the respective machine program.
+Excercises in Java about automata, Lexer, parser and then translator development based on a Context Free Grammar; they are made in a progressive order and used to make the final project, **a compiler for a custom language ((https://github.com/lucamodica/LFT/blob/main/Context_Free_Grammar.jpg) the CFG image) that generate as output the respective machine program.**
 
 > This project was made by me and @LorenzoPallanza ✨,based on 2nd (2020/2021) year graduation on computer science (University of Turin, esame di Linguaggi Formali e Traduttori).
